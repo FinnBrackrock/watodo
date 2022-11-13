@@ -1,8 +1,9 @@
+import Tree from "./Components/Tree/Tree";
 
 function App() {
   return (
-    <div className="App">
-        penis
+    <div className="app">
+        <Tree />
     </div>
   );
 }
