@@ -1,0 +1,48 @@
+.node {
+    border: 3px solid white;
+    min-width: 300px;
+    min-height: 200px;
+    border-radius: 15px;
+}
+
+.nodeHead{
+    width: 100%;
+    border-bottom: 3px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nodeBody {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nodeTextarea {
+    width: 90%;
+    padding:10px;
+    min-height: 300px;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color: white;
+    resize: none;
+}
+
+
+textarea::-webkit-scrollbar {
+    border-radius: 10px;
+    width: 8px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background-color: #666;
+  outline: 1px solid transparent;
+  border-radius: 10px;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
