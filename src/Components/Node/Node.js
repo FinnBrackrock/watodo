@@ -2,13 +2,17 @@ import './node.css';
 import { useState, useEffect } from 'react';
 
 import { db } from '../..';
-import { collection, getDocs, getDoc, updateDoc, doc } from 'firebase/firestore'
+import { getDoc, updateDoc, doc, onSnapshot } from 'firebase/firestore'
 
 const Node = () => {
   const [val, setVal] = useState({
     color: 'white',
     text: ''
-  })
+  });
+
+  const [typing, setTyping] = useState(false);
+
+  const [timeoutHandle, setTimeoutHandle] = useState(null);
 
   const docRef = doc(db, 'notes', 'GPkfQF4PrMNKF7EfGuhV');
 
@@ -18,14 +22,32 @@ const Node = () => {
         setVal(query.data());
     }
     setText()
-  }, [])  
+
+
+    const unsub = onSnapshot(docRef, (doc) => {
+      setVal(doc.data());
+    });
+  }, [])
 
   const update = async (e) => {
-    await updateDoc(docRef, {
-      text: e,
-    });
-    const query = await getDoc(docRef);
-    setVal(query.data());
+    setVal({...val, text: e})
+
+    const updateText = async (e) => {
+      await updateDoc(docRef, {
+        text: e,
+      });
+      setTyping(false);
+    }
+
+    if(!typing) {
+      setTyping(true);
+      const timeoutId = setTimeout(() => updateText(e), 500);
+      setTimeoutHandle(timeoutId);
+    } else {
+      const timeoutId = setTimeout(() => updateText(e), 500);
+      setTimeoutHandle(timeoutId);
+      window.clearTimeout(timeoutHandle);
+    }
   }
 
 
