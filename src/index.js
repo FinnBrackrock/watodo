@@ -1,14 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import App from './Components/App/App';
 import reportWebVitals from './reportWebVitals';
+
+import { initializeApp } from "firebase/app";
+import { getFirestore } from 'firebase/firestore';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBp3qsJdPyrOZ3CaOp-LAtUZWZGVvct0qU",
+  authDomain: "watodo-1baf8.firebaseapp.com",
+  projectId: "watodo-1baf8",
+  storageBucket: "watodo-1baf8.appspot.com",
+  messagingSenderId: "123413497638",
+  appId: "1:123413497638:web:0eaa4084331be0d8ef63e7",
+  // Google Analytics:
+  // measurementId: "G-88PT41NC4B"
+};
+
+export const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <App />
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

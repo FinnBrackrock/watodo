@@ -1,4 +1,4 @@
-import Tree from "./Components/Tree/Tree";
+import Tree from "../Tree/Tree";
 
 function App() {
   return (
