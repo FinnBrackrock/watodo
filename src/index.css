@@ -4,6 +4,7 @@
   --main-form-cl: rgb();
   --main-sh: 15px 15px 20px rgb(0, 0, 0);
   --main-sh-hover: 35px 35px 40px rgb(0, 0, 0);
+  --el-sh-hover: 5px 5px 10px rgb(0, 0, 0);
 }
 
 body {
