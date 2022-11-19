@@ -1,0 +1,11 @@
+.signInState {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    text-align: right;
+}
+
+#signout {
+    text-decoration: underline;
+    cursor: pointer;
+}
