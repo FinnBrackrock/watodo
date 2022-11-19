@@ -35,8 +35,8 @@ const LoginWindow = () => {
             <Link to='/signup' id='createAccountText2'>Create an account</Link>
         </div>
         <form className='loginForm'>
-            <input placeholder='Email adress' className='loginInput' onChange={(e) => setEmail(e.target.value)} value={email}></input>
-            <input type='password' placeholder='Password' className='loginInput' onChange={(e) => setPassword(e.target.value)} value={password}></input>
+            <input autoComplete='on' placeholder='Email adress' className='loginInput' onChange={(e) => setEmail(e.target.value)} value={email}></input>
+            <input autoComplete='on' type='password' placeholder='Password' className='loginInput' onChange={(e) => setPassword(e.target.value)} value={password}></input>
             <button type='submit' className='loginButton' onClick={(e) => signIn(e)}>Log In</button>
         </form>
             <a href='' onClick={() => alert('Pech gehabt')} style={{color: 'white', marginTop: '10px'}}>Forgot password?</a>
