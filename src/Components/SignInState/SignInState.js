@@ -4,7 +4,7 @@ import { auth } from '../..';
 
 import { signOut } from 'firebase/auth';
 
-const SignInState: React.FC = () => {
+const SignInState = () => {
     const user = auth.currentUser;
 
     const logOut = async () => {
