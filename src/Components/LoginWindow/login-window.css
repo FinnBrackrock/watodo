@@ -1,16 +1,21 @@
 .loginWindow {
-    border: 3px solid white;
-    min-width: 320px;
-    min-height: 400px;
+    background: var(--main-el-cl);
+    min-width: 420px;
+    min-height: 500px;
     border-radius: 15px;
     box-sizing: border-box;
-
     display: flex;
     align-items: center;
     flex-direction: column;
     padding-top: 30px;
-
+    border: 1px solid white;
+    box-shadow: var(--main-sh);
+    transition: box-shadow 0.5s ease;
     /* font-size: 40px; */
+}
+
+.loginWindow:hover {
+    box-shadow: var(--main-sh-hover);
 }
 
 #loginText {
@@ -42,6 +47,7 @@
 
 .loginInput {
     margin-top: 20px;
+    padding: 5px;
     height: 30px;
     border-radius: 7px;
     border: none;
