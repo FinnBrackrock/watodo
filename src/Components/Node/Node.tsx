@@ -36,10 +36,10 @@ const Node = () => {
     };
   }, []);
 
-  const update = async (e) => {
-    setText(e);
+  const update = async (e: string) => {
+    setNodeText(e);
 
-    const updateText = async (e) => {
+    const updateText = async (e: string) => {
       await updateDoc(docRef, {
         text: e,
       });
