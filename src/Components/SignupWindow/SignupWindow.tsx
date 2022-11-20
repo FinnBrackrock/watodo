@@ -6,7 +6,8 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 import { Link } from 'react-router-dom';
 
-const SignupWindow = () => {
+
+const SignupWindow:React.FC = () => {
     
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

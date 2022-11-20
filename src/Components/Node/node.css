@@ -1,42 +1,52 @@
 .node {
-    border: 3px solid white;
-    min-width: 300px;
-    min-height: 200px;
-    border-radius: 15px;
+  background: var(--main-el-cl);
+  min-width: 420px;
+  min-height: 500px;
+  border-radius: var(--main-border-radius);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border: var(--main-border);
+  box-shadow: var(--main-sh);
+  transition: var(--main-sh-tr);
 }
 
-.nodeHead{
-    width: 100%;
-    border-bottom: 3px solid white;
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.node:hover {
+  box-shadow: var(--main-sh-hover);
+}
+
+.nodeHead {
+  width: 100%;
+  border-bottom: var(--main-border);
+  border-radius: var(--main-border-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .nodeBody {
-    margin: 7px 0px 7px 0px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  margin: 7px 0px 7px 0px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .nodeTextarea {
-    width: 90%;
-    padding:10px;   
-    min-height: 300px;
-    background-color: transparent;
-    outline: none;
-    border: none;
-    color: white;
-    resize: none;
+  width: 90%;
+  padding: 10px;
+  min-height: 300px;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  color: white;
+  resize: none;
 }
 
-
 textarea::-webkit-scrollbar {
-    border-radius: 10px;
-    width: 8px;
+  border-radius: 10px;
+  width: 8px;
 }
 
 textarea::-webkit-scrollbar-thumb {
@@ -46,5 +56,5 @@ textarea::-webkit-scrollbar-thumb {
 }
 
 textarea::-webkit-scrollbar-thumb:hover {
-    background: #888;
+  background: #888;
 }
