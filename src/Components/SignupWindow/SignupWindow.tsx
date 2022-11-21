@@ -7,6 +7,8 @@ import { getDoc, doc, updateDoc } from 'firebase/firestore'
 
 import { Link } from 'react-router-dom';
 
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
+
 
 const SignupWindow:React.FC = () => {
     
@@ -16,6 +18,8 @@ const SignupWindow:React.FC = () => {
 
     const [usernameCheck, setUsernameCheck] = useState('');
     const [validUsername, setValidUsername] = useState(false);
+
+    const [showPassword, setShowPassword] = useState(false);
 
     const usermailDocument = doc(db, 'usernamesCollection', 'userMail');
 
@@ -91,10 +95,20 @@ const SignupWindow:React.FC = () => {
             <Link to='/login' id='createAccountText2'>Login</Link>
         </div>
         <form className='loginForm'>
-            <input placeholder='Username' className='loginInput' onChange={(e) => usernameInputCheck(e.target.value)} value={username}></input>
+            <div className='inputWrapper'>
+                <input placeholder='Username' className='loginInput' onChange={(e) => usernameInputCheck(e.target.value)} value={username}></input>
+            </div>
             {usernameCheck.length >= 1 && <div style={{color: validUsername ? 'green' : 'red'}} className='userNameCheck'>{usernameCheck}</div>}
-            <input placeholder='Email adress' className='loginInput' onChange={(e) => setEmail(e.target.value)} value={email}></input>
-            <input type='password' placeholder='Password' className='loginInput' onChange={(e) => setPassword(e.target.value)} value={password}></input>
+            <div className='inputWrapper'>
+                <input placeholder='Email adress' className='loginInput' onChange={(e) => setEmail(e.target.value)} value={email}></input>
+            </div>
+            <div className='inputWrapper'>
+                <input type={showPassword ? 'text' : 'password'} placeholder='Password' className='loginInput' onChange={(e) => setPassword(e.target.value)} value={password}></input>
+                {showPassword ? 
+                    <AiOutlineEye size={20} onClick={() => setShowPassword(false)} className='showPasswordToggle' /> :
+                    <AiOutlineEyeInvisible size={20} onClick={() => setShowPassword(true)} className='showPasswordToggle' />
+                }
+            </div>
             <button type='submit' className='loginButton' onClick={(e) => createAccount(e)}>Sign up</button>
         </form>
     </div>

@@ -73,18 +73,42 @@
 .loginInput {
   color: white!important;
   background-color: var(--main-bg-cl) !important;
-  margin-top: 20px;
+  /* margin-top: 20px; */
   padding: 5px 15px;
   height: 30px;
   border-radius: 7px;
   border: none;
   transition: var(--main-scale-tr);
   outline: none;
+  width: 95%;
 }
+
+/* .loginInput:hover {
+  transform: scale(1.03);
+} */
+
 
 /* .loginInput:focus {
   transform: scale(1.03);
 } */
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  transition: var(--main-scale-tr);
+  position: relative;
+}
+
+.inputWrapper:hover {
+  transform: scale(1.03);
+}
+
+.showPasswordToggle {
+  position: absolute;
+  right: 20px;
+  cursor: pointer;
+}
 
 .loginButton {
   background-color: var(--main-bg-cl);
@@ -98,10 +122,6 @@
 }
 
 .loginButton:hover {
-  transform: scale(1.03);
-}
-
-.loginInput:hover {
   transform: scale(1.03);
 }
 
