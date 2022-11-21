@@ -11,7 +11,7 @@ const LoginWindow = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     
-    const signIn = async (e) => {
+    const signIn = async (e: React.MouseEvent) => {
         e.preventDefault();
         try {
             if(email && password) {

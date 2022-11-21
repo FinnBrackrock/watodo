@@ -12,7 +12,7 @@ const SignupWindow:React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     
-    const createAccount = async (e) => {
+    const createAccount = async (e: React.MouseEvent) => {
         e.preventDefault();
         try {
             if(email && password.length >= 8) {

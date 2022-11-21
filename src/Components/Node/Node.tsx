@@ -8,7 +8,7 @@ const Node = () => {
   const [nodeText, setNodeText] = useState("");
 
   const [typing, setTyping] = useState(false);
-  const [timeoutHandle, setTimeoutHandle] = useState(null);
+  const [timeoutHandle, setTimeoutHandle] = useState<number>();
 
   const docRef = doc(db, "notes", "GPkfQF4PrMNKF7EfGuhV");
   useEffect(() => {
@@ -48,10 +48,10 @@ const Node = () => {
 
     if (!typing) {
       setTyping(true);
-      const timeoutId = setTimeout(() => updateText(e), 500);
+      const timeoutId = window.setTimeout(() => updateText(e), 500);
       setTimeoutHandle(timeoutId);
     } else {
-      const timeoutId = setTimeout(() => updateText(e), 500);
+      const timeoutId = window.setTimeout(() => updateText(e), 500);
       setTimeoutHandle(timeoutId);
       window.clearTimeout(timeoutHandle);
     }

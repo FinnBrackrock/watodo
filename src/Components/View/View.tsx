@@ -10,7 +10,12 @@ import { useNavigate } from 'react-router-dom';
 import { auth } from "../..";
 import { onAuthStateChanged } from  'firebase/auth'
 
-const View = ({ signin, signup }) => {
+type ViewPropsType = {
+  signin: boolean,
+  signup: boolean,
+};
+
+const View = ({ signin, signup }: ViewPropsType) => {
     const navigate = useNavigate();
 
   
