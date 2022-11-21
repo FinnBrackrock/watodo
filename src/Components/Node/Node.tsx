@@ -8,9 +8,10 @@ const Node = () => {
   const [nodeText, setNodeText] = useState("");
 
   const [typing, setTyping] = useState(false);
-  const [timeoutHandle, setTimeoutHandle] = useState<number>();
+  const [timeoutHandle, setTimeoutHandle] = useState(0);
 
   const docRef = doc(db, "notes", "GPkfQF4PrMNKF7EfGuhV");
+  
   useEffect(() => {
     async function setText() {
       const initialDoc = await getDoc(docRef);

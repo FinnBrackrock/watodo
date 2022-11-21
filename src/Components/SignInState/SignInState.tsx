@@ -5,7 +5,9 @@ import { auth } from '../..';
 import { signOut } from 'firebase/auth';
 
 const SignInState = () => {
-    const user = auth.currentUser;
+    const user = auth.currentUser?.displayName;
+
+    console.log(auth.currentUser);
 
     const logOut = async () => {
       await signOut(auth);
@@ -13,9 +15,9 @@ const SignInState = () => {
 
   return (
     <div className='signInState'>
-        {user && <div>Signed in as:<br />{user.email}<br /><div id='signout' onClick={logOut}>Sign out</ div></div>}
+        {user && <div>Signed in as {user}<br /><div id='signout' onClick={logOut}>Sign out</ div></div>}
         
-    </div>  
+    </div>
   )
 }
 

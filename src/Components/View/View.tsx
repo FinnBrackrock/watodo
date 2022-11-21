@@ -24,7 +24,8 @@ const View = ({ signin, signup }: ViewPropsType) => {
         if(user) {
           navigate('/');
         } else {
-          navigate('/login');
+          if(signup) navigate('/signup');
+          else navigate('/login');
         }
       })
     }, []);
