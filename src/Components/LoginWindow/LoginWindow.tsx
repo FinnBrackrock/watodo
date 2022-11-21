@@ -24,6 +24,8 @@ const LoginWindow = () => {
             if(login.includes('@')) {
                 try {
                     await signInWithEmailAndPassword(auth, login, password);
+                    setEmail('');
+                    setPassword('');
                 } catch {
                     console.error('Wrong email or password');
                 }
@@ -33,13 +35,13 @@ const LoginWindow = () => {
                 if(usermail !== undefined && usermail !== null) {
                     try {
                         await signInWithEmailAndPassword(auth, usermail, password);
+                        setEmail('');
+                        setPassword('');
                     } catch {
                         console.error('Wrong username or password')
                     }
                 } else console.error('Wrong username or password');
             }
-            setEmail('');
-            setPassword('');
         } else {
             console.error('Wrong input');
         }
@@ -47,7 +49,7 @@ const LoginWindow = () => {
 
   return (
     <div className='loginWindow'>
-        <h1 id='loginText'>Log In</h1>
+        <h1 id='loginText'>Sign In</h1>
         <div id='createAccountTextWrapper'>
             <h3 id='createAccountText1'>New User?</h3>
             <Link to='/signup' id='createAccountText2'>Create an account</Link>
@@ -63,7 +65,7 @@ const LoginWindow = () => {
                     <AiOutlineEyeInvisible size={20} onClick={() => setShowPassword(true)} className='showPasswordToggle' />
                 }
             </div>
-            <button type='submit' className='loginButton' onClick={(e) => signIn(e)}>Log In</button>
+            <button type='submit' className='loginButton' onClick={(e) => signIn(e)}>Sign In</button>
         </form>
             <a href='' onClick={() => alert('Pech gehabt')} style={{color: 'white', marginTop: '10px'}}>Forgot password?</a>
     </div>

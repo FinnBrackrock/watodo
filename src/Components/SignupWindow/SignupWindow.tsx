@@ -92,7 +92,7 @@ const SignupWindow:React.FC = () => {
         <h1 id='loginText'>Sign up</h1>
         <div id='createAccountTextWrapper'>
             <h3 id='createAccountText1'>Already have an account?</h3>
-            <Link to='/login' id='createAccountText2'>Login</Link>
+            <Link to='/login' id='createAccountText2'>Sign in</Link>
         </div>
         <form className='loginForm'>
             <div className='inputWrapper'>
