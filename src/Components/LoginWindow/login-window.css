@@ -79,11 +79,12 @@
   border-radius: 7px;
   border: none;
   transition: var(--main-scale-tr);
-}
-
-.loginInput:focus {
   outline: none;
 }
+
+/* .loginInput:focus {
+  transform: scale(1.03);
+} */
 
 .loginButton {
   background-color: var(--main-bg-cl);

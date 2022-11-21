@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 import { auth, db } from "../..";
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { getDoc, doc, updateDoc, arrayUnion } from 'firebase/firestore'
+import { getDoc, doc, updateDoc } from 'firebase/firestore'
 
 import { Link } from 'react-router-dom';
 
@@ -17,7 +17,7 @@ const SignupWindow:React.FC = () => {
     const [usernameCheck, setUsernameCheck] = useState('');
     const [validUsername, setValidUsername] = useState(false);
 
-    const usernamesDocument = doc(db, 'usernamesCollection', 'usernamesDocument');
+    const usermailDocument = doc(db, 'usernamesCollection', 'userMail');
 
     const isValidUsername = async (testUsername: string) => {
         if(testUsername !== '') {
@@ -25,17 +25,16 @@ const SignupWindow:React.FC = () => {
                 if(testUsername.length <= 16) {
                     if(/.*[a-zA-Z].*/.test(testUsername)) {
                         if(/^[A-Za-z0-9_]*$/.test(testUsername)) {
-                            const usernamesDoc = await getDoc(usernamesDocument);
-                            const usernamesArray = usernamesDoc.data()?.usernamesField;
-                            if(usernamesArray === undefined || usernamesArray === null) {
-                                return {msg: 'Could not check username availability', valid: false};
-                            } else {
+                            const usermailDoc = await getDoc(usermailDocument);
+                            const usermailObject = usermailDoc.data();
+                            if(usermailObject !== undefined) {
+                                const usernamesArray = Object.keys(usermailObject);
                                 if(usernamesArray.includes(testUsername)) {
                                     return {msg: 'Username is already taken', valid: false};
                                 } else {
                                     return {msg: `Username ${testUsername} is available`, valid: true};
                                 }
-                            }
+                            } return {msg: 'Could not check username availability', valid: false};
                         } else return {msg: 'Username can only contain letters, numbers and _', valid: false};
                     } else return {msg: 'Username must contain at least one letter', valid: false};
                 } else return {msg: 'Username cannot contain more than 16 characters', valid: false};
@@ -54,10 +53,9 @@ const SignupWindow:React.FC = () => {
         e.preventDefault();
         const usernameIsValid = await isValidUsername(username);
         if(email && password.length >= 8 && usernameIsValid.valid) {
-            
             try {
-                await updateDoc(usernamesDocument, {
-                    usernamesField: arrayUnion(username),
+                await updateDoc(usermailDocument, {
+                    [username]: email,
                 });
                 try {
                     await createUserWithEmailAndPassword(auth, email, password);

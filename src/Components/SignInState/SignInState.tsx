@@ -7,8 +7,6 @@ import { signOut } from 'firebase/auth';
 const SignInState = () => {
     const user = auth.currentUser?.displayName;
 
-    console.log(auth.currentUser);
-
     const logOut = async () => {
       await signOut(auth);
     }
