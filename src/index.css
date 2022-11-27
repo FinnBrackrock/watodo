@@ -1,6 +1,24 @@
+:root {
+  /* colors */
+  --main-bg-cl: rgb(29, 29, 29);
+  --main-el-cl: rgb(61, 61, 61);
+  --main-form-cl: rgb();
+  /* shadows */
+  --main-sh: 15px 15px 20px rgb(0, 0, 0);
+  --main-sh-hover: 35px 35px 40px rgb(0, 0, 0);
+  --el-sh-hover: 5px 5px 10px rgb(0, 0, 0);
+  /* borders */
+  --main-border: 1px solid white;
+  --main-border-radius: 15px;
+  /* transitions */
+  --main-sh-tr: box-shadow 0.5s ease;
+  --main-scale-tr: transform 0.2s ease-in-out;
+}
+
 body {
   margin: 0;
-  background-color: rgb(36, 36, 36);
+  padding: 0;
+  background-color: var(--main-bg-cl);
   color: white;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
