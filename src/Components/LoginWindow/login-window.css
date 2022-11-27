@@ -1,0 +1,138 @@
+.loginWindow {
+  background: var(--main-el-cl);
+  min-width: 420px;
+  min-height: 500px;
+  border-radius: var(--main-border-radius);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 30px;
+  border: var(--main-border);
+  box-shadow: var(--main-sh);
+  transition: var(--main-sh-tr);
+  /* font-size: 40px; */
+}
+
+/* mobile */
+@media only screen and (max-width: 600px) {
+  .loginWindow {
+    min-width: 320px;
+  }
+}
+
+/* tablet */
+@media only screen and (min-width: 600px) and (max-width: 1000px) {
+  .loginWindow {
+    min-width: 450px;
+  }
+}
+
+/* desktop */
+@media only screen and (min-width: 1000px) {
+    .loginWindow {
+      min-width: 720px;
+    }
+  }
+
+::placeholder {
+  color: white;
+}
+
+.loginWindow:hover {
+  box-shadow: var(--main-sh-hover);
+}
+
+#loginText {
+  margin-bottom: 5px;
+}
+
+#createAccountTextWrapper {
+  display: flex;
+}
+
+#createAccountText1 {
+  margin: 0px;
+  font-weight: 100;
+}
+
+#createAccountText2 {
+  margin: 0px;
+  margin-left: 5px;
+  font-weight: 100;
+  font-size: 19px;
+  color: white;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  width: 85%;
+}
+
+.loginInput {
+  color: white!important;
+  background-color: var(--main-bg-cl) !important;
+  /* margin-top: 20px; */
+  padding: 5px 15px;
+  height: 30px;
+  border-radius: 7px;
+  border: none;
+  transition: var(--main-scale-tr);
+  outline: none;
+  width: 95%;
+}
+
+/* .loginInput:hover {
+  transform: scale(1.03);
+} */
+
+
+/* .loginInput:focus {
+  transform: scale(1.03);
+} */
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  transition: var(--main-scale-tr);
+  position: relative;
+}
+
+.inputWrapper:hover {
+  transform: scale(1.03);
+}
+
+.showPasswordToggle {
+  position: absolute;
+  right: 20px;
+  cursor: pointer;
+}
+
+.loginButton {
+  background-color: var(--main-bg-cl);
+  color: white;
+  margin-top: 40px;
+  height: 60px;
+  border-radius: 7px;
+  border: none;
+  cursor: pointer;
+  transition: var(--main-scale-tr);
+}
+
+.loginButton:hover {
+  transform: scale(1.03);
+}
+
+.loginButton:active {
+  transition: none;
+  /* background-color: turquoise; */
+  transform: scale(1);
+}
+
+/* .loginInput:-webkit-autofill {
+  -webkit-text-fill-color: white;
+  box-shadow: 0 0 0 50px var(--main-bg-cl) inset;
+  -webkit-box-shadow: 0 0 0 50px var(--main-bg-cl) inset;
+} */
