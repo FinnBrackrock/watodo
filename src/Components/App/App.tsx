@@ -1,23 +1,41 @@
-import View from "../View/View";
+import Tree from "../Tree/Tree";
+import LoginWindow from "../LoginWindow/LoginWindow";
+import SignupWindow from "../SignupWindow/SignupWindow";
+import ProtectedRoute from "../Routes/ProtectedRoute";
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
+
+import { auth } from "../..";
+
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { onAuthStateChanged, User } from "@firebase/auth";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [user, setUser] = useState<User|null>(null);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, user => {
+      setUser(user);
+    })
+  }, []);
+
   return (
     <div className="app">
       <Router>
         <Routes>
-
           <Route path="/" element={
-            <View signin={false} signup={false} />
+            <ProtectedRoute user={user}>
+              <Tree/>
+            </ProtectedRoute>
           } />
 
           <Route path="/login" element={
-            <View signin={true} signup={false}/>
+            <LoginWindow />
           } />
 
           <Route path="/signup" element={
-            <View signin={true} signup={true}/>
+            <SignupWindow />
           } />
           
         </Routes>
