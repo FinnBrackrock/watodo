@@ -17,7 +17,7 @@ function App() {
   useEffect(() => {
     onAuthStateChanged(auth, userObject => {
       setUser(userObject);
-    })
+    });
   }, []);
 
   return (

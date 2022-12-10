@@ -17,7 +17,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    // console.log(user);
     if (null === user) {
       navigate(redirectPath);
     }
