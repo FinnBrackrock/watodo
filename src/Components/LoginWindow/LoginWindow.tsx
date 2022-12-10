@@ -2,20 +2,32 @@ import "./login-window.css";
 import { useState, useEffect } from "react";
 
 import { auth, db } from "../..";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { getDoc, doc } from "firebase/firestore";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { getDoc, doc, query, collection, where, getDocs } from "firebase/firestore";
 
 import { Link } from "react-router-dom";
 
+import { useNavigate } from "react-router-dom";
+
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { DocumentData, QuerySnapshot } from "@google-cloud/firestore";
 
 const LoginWindow = () => {
-  const [login, setEmail] = useState("");
+  const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
 
   const usermailDocument = doc(db, "usernamesCollection", "userMail");
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, userObject => {
+      if(null !== userObject) navigate('/');
+    });
+    // Unsubscribe?
+  }, []);
 
   const signIn = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -23,18 +35,22 @@ const LoginWindow = () => {
       if (login.includes("@")) {
         try {
           await signInWithEmailAndPassword(auth, login, password);
-          setEmail("");
+          setLogin("");
           setPassword("");
         } catch {
           console.error("Wrong email or password");
         }
       } else {
-        const usermailDoc = await getDoc(usermailDocument);
-        const usermail = usermailDoc.data()?.[login];
-        if (usermail !== undefined && usermail !== null) {
+        const usernameQuery = query(collection(db, 'users'), where('username', '==', login));
+        const usernameQueryResponse = await getDocs(usernameQuery);
+        let usernameQueryArray: DocumentData[] = [];
+        usernameQueryResponse.forEach((doc) => {
+          usernameQueryArray.push(doc.data());
+        });
+        if (usernameQueryArray.length >= 1) {
           try {
-            await signInWithEmailAndPassword(auth, usermail, password);
-            setEmail("");
+            await signInWithEmailAndPassword(auth, usernameQueryArray[0].email, password);
+            setLogin("");
             setPassword("");
           } catch {
             console.error("Wrong username or password");
@@ -49,7 +65,7 @@ const LoginWindow = () => {
   return (
     <div className="loginWrapper">
       <div className="loginWindow">
-        <h1 id="loginText">Sign In</h1>
+        <h1 id="loginText">Login</h1>
         <div id="createAccountTextWrapper">
           <h3 id="createAccountText1">New User?</h3>
           <Link to="/signup" id="createAccountText2">
@@ -62,7 +78,7 @@ const LoginWindow = () => {
               autoComplete="on"
               placeholder="Username or email address"
               className="loginInput"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setLogin(e.target.value)}
               value={login}
             ></input>
           </div>
@@ -99,7 +115,7 @@ const LoginWindow = () => {
         </form>
         <a
           href=""
-          onClick={() => alert("Pech gehabt")}
+          onClick={(e) => {e.preventDefault();alert('Pech gehabt!');}}
           style={{ color: "white", marginTop: "10px" }}
         >
           Forgot password?

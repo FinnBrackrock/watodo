@@ -2,12 +2,13 @@ import "./signup-window.css";
 import { useState, useEffect } from "react";
 
 import { auth, db } from "../..";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { getDoc, doc, updateDoc } from "firebase/firestore";
+import { createUserWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
+import { getDoc, doc, collection, updateDoc, setDoc, addDoc, where, query, getDocs, QuerySnapshot } from "firebase/firestore";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { DocumentData } from "@google-cloud/firestore";
 
 const SignupWindow: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -19,7 +20,14 @@ const SignupWindow: React.FC = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const usermailDocument = doc(db, "usernamesCollection", "userMail");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, userObject => {
+      if(null !== userObject) navigate('/');
+    });
+  }, []);
+
 
   const isValidUsername = async (testUsername: string) => {
     if(testUsername === "") {
@@ -53,22 +61,18 @@ const SignupWindow: React.FC = () => {
             valid: false,
           };
     }
-
-    const usermailDoc = await getDoc(usermailDocument);
-    const usermailObject = usermailDoc.data();
-    if (usermailObject === undefined) {
-        return {
-            msg: "Could not check username availability, please try again later.",
-            valid: false,
-          };
-    }
        
-    const usernamesArray = Object.keys(usermailObject);
-    if (usernamesArray.includes(testUsername)) {
-      return { msg: "Username is already taken", valid: false };
+    const usernameQuery = query(collection(db, 'users'), where('username', '==', testUsername));
+    const usernameQueryResponse: QuerySnapshot = await getDocs(usernameQuery);
+    let usernameQueryArray: DocumentData[] = [];
+    usernameQueryResponse.forEach((doc) => {
+      usernameQueryArray.push(doc.data());
+    });
+    if (usernameQueryArray.length >= 1) {
+      return { msg: `Username '${testUsername}' is already taken`, valid: false };
     } else {
         return {
-          msg: `Username ${testUsername} is available`,
+          msg: `Username '${testUsername}' is available`,
           valid: true,
         };
       }
@@ -81,31 +85,34 @@ const SignupWindow: React.FC = () => {
     setValidUsername(usernameCheck.valid);
   };
 
+  const createUserWithUserData = async () => {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    if(null !== auth.currentUser) {
+      await updateProfile(auth.currentUser, {
+        displayName: username,
+    });
+    }
+    const userDocId = userCredential.user.uid;
+      try {
+        await setDoc(doc(db, 'users', userDocId), {
+          username: username,
+          email: email,
+        });
+        await addDoc(collection(db, 'users', userDocId, 'nodes'), {
+          title: `${username}'s node`,
+          text: `hi there my name is ${username}`,
+        });
+      } catch (err) {
+        console.error(err);
+      }
+  }
+
   const createAccount = async (e: React.MouseEvent) => {
     e.preventDefault();
-    const usernameIsValid = await isValidUsername(username);
+    // const usernameIsValid = await isValidUsername(username);
+    const usernameIsValid = {valid: true};
     if (email && password.length >= 8 && usernameIsValid.valid) {
-      try {
-        await updateDoc(usermailDocument, {
-          [username]: email,
-        });
-        try {
-          await createUserWithEmailAndPassword(auth, email, password);
-          if (auth.currentUser) {
-            try {
-              await updateProfile(auth.currentUser, {
-                displayName: username,
-              });
-            } catch {
-              console.error("Invalid username");
-            }
-          } else console.error("Setting username failed");
-        } catch {
-          console.error("Invalid email");
-        }
-      } catch {
-        console.error("Pushing new username to list failed");
-      }
+      createUserWithUserData();
 
       setUsername("");
       setEmail("");
@@ -122,7 +129,7 @@ const SignupWindow: React.FC = () => {
         <div id="createAccountTextWrapper">
           <h3 id="createAccountText1">Already have an account?</h3>
           <Link to="/login" id="createAccountText2">
-            Sign in
+            Login
           </Link>
         </div>
         <form className="loginForm">

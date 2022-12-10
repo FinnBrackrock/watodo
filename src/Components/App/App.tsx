@@ -7,16 +7,16 @@ import ProtectedRoute from "../Routes/ProtectedRoute";
 
 import { auth } from "../..";
 
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { onAuthStateChanged, User } from "@firebase/auth";
 import { useEffect, useState } from "react";
 
 function App() {
-  const [user, setUser] = useState<User|null>(null);
+  const [user, setUser] = useState<User|null|undefined>(undefined);
 
   useEffect(() => {
-    onAuthStateChanged(auth, user => {
-      setUser(user);
+    onAuthStateChanged(auth, userObject => {
+      setUser(userObject);
     })
   }, []);
 

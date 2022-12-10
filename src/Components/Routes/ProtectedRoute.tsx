@@ -3,9 +3,9 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 type ProtectedRouteProps = {
-  user: User | null;
-  redirectPath?: string;
-  children: JSX.Element;
+  user: User | null | undefined,
+  redirectPath?: string,
+  children: JSX.Element,
 };
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
@@ -15,9 +15,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 }) => {
 
   const navigate = useNavigate();
+
   useEffect(() => {
-    if (!user) {
-      navigate("/login");
+    // console.log(user);
+    if (null === user) {
+      navigate(redirectPath);
     }
   });
 
