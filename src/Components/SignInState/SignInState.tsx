@@ -1,22 +1,34 @@
-import './sign-in-state.css';
+import "./sign-in-state.css";
 
-import { auth } from '../..';
+import { auth } from "../..";
 
-import { signOut } from 'firebase/auth';
+import { signOut, User } from "firebase/auth";
+import { useState } from "react";
 
-const SignInState = () => {
-    const user = auth.currentUser?.displayName;
+const SignInState: React.FC = () => {
+  const user = auth.currentUser;
 
-    const logOut = async () => {
-      await signOut(auth);
-    }
+  //if(user?.displayName === null) {
+  //  setTimeout(() => window.location.reload(), 500);
+  //}
+
+  const logOut = async () => {
+    await signOut(auth);
+  };
 
   return (
-    <div className='signInState'>
-        {user && <div>Signed in as {user}<br /><div id='signout' onClick={logOut}>Sign out</ div></div>}
-        
+    <div className="signInState">
+      {user && (
+        <div>
+          Signed in as {user.displayName}
+          <br />
+          <div id="signout" onClick={logOut}>
+            Sign out
+          </div>
+        </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default SignInState
+export default SignInState;
