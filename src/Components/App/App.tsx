@@ -8,14 +8,15 @@ import ProtectedRoute from "../Routes/ProtectedRoute";
 import { auth } from "../..";
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { onAuthStateChanged, User } from "@firebase/auth";
+import { User } from "@firebase/auth";
 import { useEffect, useState } from "react";
+import { onIdTokenChanged } from "firebase/auth";
 
 function App() {
   const [user, setUser] = useState<User|null|undefined>(undefined);
 
   useEffect(() => {
-    onAuthStateChanged(auth, userObject => {
+    onIdTokenChanged(auth, userObject => {
       setUser(userObject);
     });
   }, []);
@@ -37,7 +38,6 @@ function App() {
           <Route path="/signup" element={
             <SignupWindow />
           } />
-          
         </Routes>
       </Router>
     </div>

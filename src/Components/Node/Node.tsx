@@ -2,9 +2,8 @@ import "./node.css";
 import { useState, useEffect } from "react";
 
 import { db, auth } from "../..";
-import { getDoc, updateDoc, doc, onSnapshot, getDocs, collection, Unsubscribe } from "firebase/firestore";
-import { onAuthStateChanged, User } from 'firebase/auth';
-import { DocumentData } from "@google-cloud/firestore";
+import { getDoc, updateDoc, doc, onSnapshot, getDocs, collection, Unsubscribe, DocumentData } from "firebase/firestore";
+import { onAuthStateChanged, User, updateProfile } from 'firebase/auth';
 
 const Node = () => {
   const [nodeText, setNodeText] = useState("");
@@ -14,8 +13,6 @@ const Node = () => {
 
   const [userId, setUserId] = useState<string | null | undefined>(undefined);
 
-  // const docRef = doc(db, "notes", "GPkfQF4PrMNKF7EfGuhV");
-  
   useEffect(() => {
       let unsubSnapshot: Unsubscribe | undefined;
       const unsubAuth = onAuthStateChanged(auth, userObject => {

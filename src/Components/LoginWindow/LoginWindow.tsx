@@ -3,14 +3,13 @@ import { useState, useEffect } from "react";
 
 import { auth, db } from "../..";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
-import { getDoc, doc, query, collection, where, getDocs } from "firebase/firestore";
+import { getDoc, doc, query, collection, where, getDocs, DocumentData } from "firebase/firestore";
 
 import { Link } from "react-router-dom";
 
 import { useNavigate } from "react-router-dom";
 
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { DocumentData, QuerySnapshot } from "@google-cloud/firestore";
 
 const LoginWindow = () => {
   const [login, setLogin] = useState("");

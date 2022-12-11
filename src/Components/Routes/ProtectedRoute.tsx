@@ -3,9 +3,9 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 type ProtectedRouteProps = {
-  user: User | null | undefined,
-  redirectPath?: string,
-  children: JSX.Element,
+  user: User | null | undefined;
+  redirectPath?: string;
+  children: JSX.Element;
 };
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
@@ -13,14 +13,15 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   redirectPath = "/login",
   children,
 }) => {
-
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (null === user) {
-      navigate(redirectPath);
-    }
-  });
+  if (null === user) {
+    navigate(redirectPath);
+  }
+
+  if (undefined === user) {
+    return <h1>Loading</h1>;
+  }
 
   return children;
 };

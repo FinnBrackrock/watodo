@@ -3,12 +3,11 @@ import { useState, useEffect } from "react";
 
 import { auth, db } from "../..";
 import { createUserWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
-import { getDoc, doc, collection, updateDoc, setDoc, addDoc, where, query, getDocs, QuerySnapshot } from "firebase/firestore";
+import { getDoc, doc, collection, updateDoc, setDoc, addDoc, where, query, getDocs, QuerySnapshot, DocumentData } from "firebase/firestore";
 
 import { Link, useNavigate } from "react-router-dom";
 
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { DocumentData } from "@google-cloud/firestore";
 
 const SignupWindow: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -109,16 +108,9 @@ const SignupWindow: React.FC = () => {
 
   const createAccount = async (e: React.MouseEvent) => {
     e.preventDefault();
-    // const usernameIsValid = await isValidUsername(username);
-    const usernameIsValid = {valid: true};
+    const usernameIsValid = await isValidUsername(username);
     if (email && password.length >= 8 && usernameIsValid.valid) {
       createUserWithUserData();
-
-      setUsername("");
-      setEmail("");
-      setPassword("");
-    } else {
-      console.error("Wrong input");
     }
   };
 
