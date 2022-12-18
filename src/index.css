@@ -15,9 +15,14 @@
   --main-scale-tr: transform 0.2s ease-in-out;
 }
 
+#root {
+  height: 100%;
+}
+
 body {
-  margin: 0;
-  padding: 0;
+  margin: 0px;
+  padding: 0px;
+  height: 100vh;
   background-color: var(--main-bg-cl);
   color: white;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -30,4 +35,9 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.app {
+  height: 100%;
+  /* border: 1px solid white; */
 }

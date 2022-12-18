@@ -8,18 +8,18 @@ import ProtectedRoute from "../Routes/ProtectedRoute";
 import { auth } from "../..";
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { User } from "@firebase/auth";
+import { onAuthStateChanged, User } from "@firebase/auth";
 import { useEffect, useState } from "react";
-import { onIdTokenChanged } from "firebase/auth";
+
 
 function App() {
   const [user, setUser] = useState<User|null|undefined>(undefined);
-
+  
   useEffect(() => {
-    onIdTokenChanged(auth, userObject => {
+    onAuthStateChanged(auth, userObject => {
       setUser(userObject);
     });
-  }, []);
+  }, []); 
 
   return (
     <div className="app">
@@ -27,7 +27,7 @@ function App() {
         <Routes>
           <Route path="/" element={
             <ProtectedRoute user={user}>
-              <Tree/>
+              <Tree user={user}/>
             </ProtectedRoute>
           } />
 

@@ -10,6 +10,8 @@
   border: var(--main-border);
   box-shadow: var(--main-sh);
   transition: var(--main-sh-tr);
+  position: relative;
+  transform: scale(0.4);
 }
 
 .node:hover {
@@ -57,4 +59,10 @@ textarea::-webkit-scrollbar-thumb {
 
 textarea::-webkit-scrollbar-thumb:hover {
   background: #888;
+}
+
+.createChildNodeIcon {
+  cursor: pointer;
+  position: absolute;
+  bottom: -50px;
 }

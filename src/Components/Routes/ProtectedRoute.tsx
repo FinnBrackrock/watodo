@@ -15,10 +15,12 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  if (null === user) {
-    navigate(redirectPath);
-  }
-
+  useEffect(() => {
+    if (null === user) {
+      navigate(redirectPath);
+    }
+  });
+  
   if (undefined === user) {
     return <h1>Loading</h1>;
   }

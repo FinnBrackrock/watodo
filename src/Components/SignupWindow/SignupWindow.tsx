@@ -86,20 +86,16 @@ const SignupWindow: React.FC = () => {
 
   const createUserWithUserData = async () => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    if(null !== auth.currentUser) {
-      await updateProfile(auth.currentUser, {
-        displayName: username,
-    });
-    }
+    // if(null !== auth.currentUser) {
+    //   await updateProfile(auth.currentUser, {
+    //     displayName: username,
+    // });
+    // }
     const userDocId = userCredential.user.uid;
       try {
         await setDoc(doc(db, 'users', userDocId), {
           username: username,
           email: email,
-        });
-        await addDoc(collection(db, 'users', userDocId, 'nodes'), {
-          title: `${username}'s node`,
-          text: `hi there my name is ${username}`,
         });
       } catch (err) {
         console.error(err);
