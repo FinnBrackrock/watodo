@@ -3,10 +3,10 @@ import SignInState from "../SignInState/SignInState";
 import Navbar from "../Navbar/Navbar";
 import CreateModal from "../CreateModal/CreateModal";
 import './tree.css'
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Unsubscribe, User } from "firebase/auth";
 import { db } from "../..";
-import { addDoc, collection, DocumentData, onSnapshot } from "firebase/firestore";
+import { addDoc, collection, doc, DocumentData, onSnapshot, updateDoc } from "firebase/firestore";
 import { AiOutlinePlusSquare } from 'react-icons/ai';
 
 type TreeProps = {
@@ -24,7 +24,7 @@ const Tree: React.FC<TreeProps> = ({ user }) => {
 
   const [selectedTree, setSelectedTree] = useState<string>('');
 
-  const [nodes, setNodes] = useState<{id: string, title: string, text: string}[] | null>(null);
+  const [nodes, setNodes] = useState<{id: string, title: string, text: string}[] | null>(null); //maybe object with ids as keys??
 
   const [treeUnsub, setTreeUnsub] = useState<Unsubscribe | null>(null);
 
@@ -50,22 +50,26 @@ const Tree: React.FC<TreeProps> = ({ user }) => {
     };
   }, [handleKeyPress]);
 
+  const selectedTreeRef = useRef<string | null>(null);
+  selectedTreeRef.current = selectedTree;
+
   useEffect(() => {
     if(user !== null && user !== undefined) {
       const unsubSnap = onSnapshot(collection(db, 'users', user.uid, 'trees'), (treeDocs) => {
-        let treeDocsArray: {id: string, name: string}[] = [];
+        let treeDocsArray: {id: string, name: string, created: number, lastEdit: number}[] = [];
         treeDocs.forEach((treeDoc) => {
-          treeDocsArray.push({id: treeDoc.id, name: treeDoc.data().name});
+          const treeDocContent = treeDoc.data();
+          treeDocsArray.push({id: treeDoc.id, name: treeDocContent.name, created: treeDocContent.created, lastEdit: treeDocContent.lastEdit});
         });
-        setTrees(treeDocsArray.sort((a, b) => a.name.localeCompare(b.name)));
-        if(!treeDocsArray.map((tree) => tree.id).includes(selectedTree)) {
+        setTrees(treeDocsArray.sort((a, b) => b.lastEdit - a.lastEdit));
+        if(selectedTreeRef.current && !treeDocsArray.map((tree) => tree.id).includes(selectedTreeRef.current)) {
           setSelectedTree('');
         }
       });
 
       return () => {
         unsubSnap();
-        if(treeUnsub) treeUnsub();
+        // if(treeUnsub) treeUnsub();
       }
     }
   }, []);
@@ -85,6 +89,20 @@ const Tree: React.FC<TreeProps> = ({ user }) => {
     } else setNodes(null);
   }
 
+  const updateLastEdit = async () => {
+    const localTimestamp = Date.now();
+
+    if(user !== null && user !== undefined) {
+      try {
+        await updateDoc(doc(db, 'users', user.uid, 'trees', selectedTree), {
+          lastEdit: localTimestamp,
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+
   useEffect(() => {
     getNodes();
   }, [selectedTree]);
@@ -92,10 +110,14 @@ const Tree: React.FC<TreeProps> = ({ user }) => {
   const createTree = async (e: React.MouseEvent) => {
     e.preventDefault();
 
+    const localTimestamp = Date.now();
+
     if(user !== null && user !== undefined && treeName.length >= 1) {
       try {
         const treeReference = await addDoc(collection(db, 'users', user.uid, 'trees'), {
           name: treeName,
+          created: localTimestamp,
+          lastEdit: localTimestamp,
         });
         setSelectedTree(treeReference.id);
       } catch (err) {
@@ -115,6 +137,7 @@ const Tree: React.FC<TreeProps> = ({ user }) => {
           title: nodeName,
           text: '',
         });
+        await updateLastEdit();
       } catch (err) {
         console.error(err);
       }
@@ -123,6 +146,26 @@ const Tree: React.FC<TreeProps> = ({ user }) => {
       getNodes();
     }
   }
+
+  const updateText = async (nodeId: string, newText: string) => {
+    if(nodes) {
+      const currentNodeIndex = nodes.indexOf(nodes.filter((node) => node.id === nodeId)[0]);
+      let updatedNodes = [...nodes];
+      updatedNodes[currentNodeIndex] = {...updatedNodes[currentNodeIndex], text: newText};
+      setNodes(updatedNodes);
+    }
+    if(user !== null && user !== undefined) {
+      try {
+        await updateDoc(doc(db, 'users', user.uid, 'trees', selectedTree, 'nodes', nodeId), {
+          text: newText,
+        });
+        await updateLastEdit(); // Do I need await here?
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+
 
   return (
     <div className="tree">
@@ -134,7 +177,7 @@ const Tree: React.FC<TreeProps> = ({ user }) => {
           <>
             <h2>Create Tree</h2>
             <form className="modalForm">
-              <input placeholder="Enter a name for your tree..." value={treeName} onChange={(e) => setTreeName(e.target.value)} className="modalNameInput"></input>
+              <input autoFocus placeholder="Enter a name for your tree..." value={treeName} onChange={(e) => setTreeName(e.target.value)} className="modalNameInput"></input>
               <input type='submit' onClick={(e) => createTree(e)} value='Create' className="modalButton"></input>
             </form>
           </> 
@@ -148,7 +191,7 @@ const Tree: React.FC<TreeProps> = ({ user }) => {
           <>
             <h2>Create Node</h2>
             <form className="modalForm">
-              <input placeholder="Enter a name for your node..." value={nodeName} onChange={(e) => setNodeName(e.target.value)} className="modalNameInput"></input>
+              <input autoFocus placeholder="Enter a name for your node..." value={nodeName} onChange={(e) => setNodeName(e.target.value)} className="modalNameInput"></input>
               <input type='submit' onClick={(e) => createNode(e)} value='Create' className="modalButton"></input>
             </form>
           </> 
@@ -164,7 +207,7 @@ const Tree: React.FC<TreeProps> = ({ user }) => {
       }}>
           <Navbar>
             <>
-              <button onClick={() => setShowTreeModal(true)} className="navButton navButtonTop">Create Tree</button>
+              <button onClick={() => setShowTreeModal(true)} className="navButton navButtonTop navButtonSelected">Create Tree</button>
               {trees.length >= 1 ?
                trees.map((tree, index) => 
                 <button onClick={() => setSelectedTree(selectedTree === tree.id ? '' : tree.id)}
@@ -174,23 +217,29 @@ const Tree: React.FC<TreeProps> = ({ user }) => {
             </>
           </Navbar>
         <div className="treeViewer">
-          {trees.length >= 1 &&
+          {trees.length >= 1 ?
           <>
             {selectedTree.length >= 1 ? 
               nodes === null ? 
                 <></> :
                 nodes.length >= 1 ? 
                   <>
-                    {nodes.map((node) => <Node key={node.id} nodeTitle={node.title} nodeText={node.text} openModal={() => setShowNodeModal(true)} />)}
+                    {nodes.map((node) => <Node 
+                      key={node.id} 
+                      nodeTitle={node.title} 
+                      nodeText={node.text}
+                      openModal={() => setShowNodeModal(true)}
+                      updateText={(newText: string) => updateText(node.id, newText)} />)}
                   </> :
                   <>
                     <h3>Create a node (Ctrl + b)</h3>
                     <AiOutlinePlusSquare onClick={() => setShowNodeModal(true)} size={30} className='createNodeIcon'/>
                   </> 
               :
-              <h3>Select a tree</h3>
+              <h3>Select a tree first</h3>
             }
-          </>
+          </> :
+          <h3>Create a tree first</h3>
           }
           <SignInState/>
         </div>

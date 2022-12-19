@@ -25,14 +25,25 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+}
+
+.editTitleIcon {
+  position: absolute;
+  right: 25px;
+  cursor: pointer;
 }
 
 .nodeBody {
   margin: 7px 0px 7px 0px;
   width: 100%;
+  height: 100%;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
+  position: relative;
+  /* padding-left: 20px; */
+  /* border: 1px solid yellow; */
 }
 
 .nodeTextarea {
@@ -44,6 +55,22 @@
   border: none;
   color: white;
   resize: none;
+}
+
+.discardTextChangesButton {
+  background-color: var(--main-bg-cl);
+  color: white;
+  margin-top: 40px;
+  height: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 7px;
+  border: none;
+  cursor: pointer;
+  transition: var(--main-scale-tr);
+  position: absolute;
+  right: 19px;
+  bottom: 13px
 }
 
 textarea::-webkit-scrollbar {

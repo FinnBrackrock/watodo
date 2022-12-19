@@ -15,7 +15,8 @@
 
 .navButton {
     border: none;
-    border-bottom: var(--main-border);
+    border: var(--main-border);
+    border-radius: var(--main-border-radius);
     box-sizing: border-box;
     min-height: 75px;
     display: flex;
@@ -27,6 +28,8 @@
     color: #ffffff;
     width: 100%; 
     outline: none;
+    margin-right: 50px;
+    margin-bottom: 10px;
 }
 
 .navButtonTop {
@@ -43,7 +46,7 @@
 
 .navButtonSelected {
     margin-right: 20px;
-    border-right: var(--main-border);
+    /* border-right: var(--main-border); */
 }
 
 .modalBlurWrapper {
